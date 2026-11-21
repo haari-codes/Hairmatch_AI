@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HairMatch AI | Find Your Perfect Hairstyle</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #faf7f4;
+  --white: #ffffff;
+  --dark: #30221f;
+  --brown: #795548;
+  --gold: #bd9563;
+  --light: #eee5dc;
+  --muted: #8b817a;
+  --pink: #f5e9e5;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--dark);
+}
+
+header {
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 7%;
+  background: white;
+  border-bottom: 1px solid var(--light);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.logo span {
+  color: var(--gold);
+}
+
+nav {
+  display: flex;
+  gap: 28px;
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--dark);
+  font-size: 13px;
+}
+
+nav a:hover {
+  color: var(--gold);
+}
+
+.hero {
+  text-align: center;
+  padding: 65px 20px 48px;
+  background: linear-gradient(120deg, #f5e9e3, #faf7f4, #eee5dc);
+}
+
+.tag {
+  display: inline-block;
+  border: 1px solid #d8b995;
+  padding: 7px 16px;
+  border-radius: 30px;
+  color: var(--brown);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  margin-bottom: 20px;
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', serif;
+}
+
+.hero h1 {
+  font-size: clamp(35px, 6vw, 57px);
+  line-height: 1.15;
+  margin-bottom: 15px;
+}
+
+.hero h1 span {
+  color: var(--gold);
+}
+
+.hero p {
+  color: var(--muted);
+  max-width: 520px;
+  margin: auto;
+  line-height: 1.8;
+  font-size: 14px;
+}
+
+main {
+  max-width: 1100px;
+  padding: 40px 20px 80px;
+  margin: auto;
+}
+
+.section-title {
+  margin-bottom: 25px;
+}
+
+.section-title h2 {
+  font-size: 29px;
+  margin-bottom: 7px;
+}
+
+.section-title p {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  align-items: start;
+}
+
+.panel {
+  background: white;
+  border: 1px solid var(--light);
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 8px 30px #513a2410;
+}
+
+.panel h3 {
+  font-size: 21px;
+  margin-bottom: 8px;
+}
+
+.panel-desc {
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 22px;
+}
+
+.upload-box {
+  min-height: 280px;
+  border: 2px dashed #d8c6b5;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  cursor: pointer;
+  overflow: hidden;
+  background: #fcfaf8;
+  text-align: center;
+  padding: 15px;
+  transition: .2s;
+}
+
+.upload-box:hover {
+  border-color: var(--gold);
+  background: #f9f3ee;
+}
+
+.upload-icon {
+  font-size: 42px;
+  margin-bottom: 12px;
+}
+
+.upload-box strong {
+  font-size: 14px;
+}
+
+.upload-box small {
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+#preview {
+  width: 100%;
+  max-height: 340px;
+  object-fit: contain;
+  display: none;
+  border-radius: 8px;
+}
+
+#photoInput {
+  display: none;
+}
+
+.field {
+  margin-top: 20px;
+}
+
+.field label {
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 9px;
+}
+
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--light);
+  background: #fcfaf8;
+  color: var(--dark);
+  border-radius: 8px;
+  font-family: inherit;
+  outline: none;
+}
+
+select:focus {
+  border-color: var(--gold);
+}
+
+.btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  margin-top: 23px;
+  background: var(--dark);
+  color: white;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.btn:hover {
+  background: var(--brown);
+  transform: translateY(-1px);
+}
+
+.btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.secondary {
+  background: var(--gold);
+}
+
+.secondary:hover {
+  background: #98754d;
+}
+
+.note {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+  margin-top: 12px;
+}
+
+.results {
+  display: none;
+  margin-top: 55px;
+}
+
+.results-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 23px;
+}
+
+.results-heading h2 {
+  font-size: 29px;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.hair-card {
+  background: white;
+  border: 1px solid var(--light);
+  border-radius: 13px;
+  overflow: hidden;
+}
+
+.hair-visual {
+  height: 145px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 60px;
+  background: linear-gradient(140deg, #f3e4da, #eee9e1);
+}
+
+.hair-info {
+  padding: 17px;
+}
+
+.hair-info h3 {
+  font-size: 19px;
+  margin-bottom: 7px;
+}
+
+.hair-info p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+  min-height: 57px;
+}
+
+.hair-info button {
+  width: 100%;
+  border: 1px solid var(--gold);
+  background: white;
+  color: var(--brown);
+  padding: 10px;
+  margin-top: 14px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.hair-info button:hover,
+.hair-info button.saved {
+  background: var(--gold);
+  color: white;
+}
+
+.tryon {
+  display: none;
+  margin-top: 45px;
+  padding: 30px;
+  background: white;
+  border: 1px solid var(--light);
+  border-radius: 15px;
+}
+
+.tryon h2 {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.tryon p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.tryon-image {
+  margin-top: 20px;
+  min-height: 180px;
+  border-radius: 10px;
+  background: #faf7f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  text-align: center;
+}
+
+.tryon-image img {
+  max-width: 100%;
+  max-height: 450px;
+  object-fit: contain;
+}
+
+.favourites {
+  margin-top: 50px;
+}
+
+.favourites h2 {
+  font-size: 27px;
+  margin-bottom: 15px;
+}
+
+#savedList {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.saved-item {
+  background: white;
+  border: 1px solid var(--light);
+  border-radius: 20px;
+  padding: 9px 15px;
+  font-size: 12px;
+}
+
+footer {
+  background: var(--dark);
+  color: white;
+  padding: 30px 15px;
+  text-align: center;
+  font-size: 12px;
+}
+
+footer span {
+  color: var(--gold);
+}
+
+@media(max-width:750px) {
+  header {
+    padding: 0 5%;
+    height: 65px;
+  }
+
+  nav {
+    gap: 13px;
+  }
+
+  nav a {
+    font-size: 11px;
+  }
+
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .result-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .panel {
+    padding: 19px;
+  }
+}
+
+@media(max-width:420px) {
+  .result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  nav a:nth-child(2) {
+    display: none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">HairMatch<span> AI.</span></div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#studio">Studio</a>
+    <a href="#favourites">Favourites</a>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <div class="tag">YOUR PERSONAL HAIRSTYLE STUDIO</div>
+  <h1>Discover the Hair<br>That <span>Defines You.</span></h1>
+  <p>
+    Upload your photo, explore hairstyles that complement
+    your features and find your next signature look.
+  </p>
+</section>
+
+<main id="studio">
+
+  <div class="section-title">
+    <h2>Find Your Perfect Match</h2>
+    <p>Start with your photo and tell us a little about your hair.</p>
+  </div>
+
+  <div class="workspace">
+
+    <div class="panel">
+      <h3>01. Your Photo</h3>
+      <p class="panel-desc">Upload a clear front-facing photograph.</p>
+
+      <label class="upload-box" for="photoInput">
+        <div id="uploadContent">
+          <div class="upload-icon">📸</div>
+          <strong>Click to upload your photo</strong>
+          <small>JPG, PNG or WEBP</small>
+          <small>Maximum 10 MB</small>
+        </div>
+        <img id="preview" alt="Your uploaded photograph">
+      </label>
+
+      <input type="file" id="photoInput" accept="image/jpeg,image/png,image/webp">
+
+      <button class="btn secondary" id="removePhoto" style="display:none" onclick="removeImage()">
+        Remove Photo
+      </button>
+
+      <p class="note">
+        Tip: Use a well-lit, front-facing photo with your hair visible.
+        Your image stays in this browser unless you request an AI transformation.
+      </p>
+    </div>
+
+    <div class="panel">
+      <h3>02. Your Hair Profile</h3>
+      <p class="panel-desc">Choose your preferences for better recommendations.</p>
+
+      <div class="field">
+        <label for="gender">Style category</label>
+        <select id="gender">
+          <option value="any">Any style</option>
+          <option value="women">Women's hairstyles</option>
+          <option value="men">Men's hairstyles</option>
+          <option value="unisex">Unisex hairstyles</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="face">Face shape</label>
+        <select id="face">
+          <option value="unknown">Not sure</option>
+          <option value="oval">Oval</option>
+          <option value="round">Round</option>
+          <option value="square">Square</option>
+          <option value="heart">Heart</option>
+          <option value="diamond">Diamond</option>
+          <option value="oblong">Oblong</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="texture">Hair texture</label>
+        <select id="texture">
+          <option value="straight">Straight</option>
+          <option value="wavy">Wavy</option>
+          <option value="curly">Curly</option>
+          <option value="coily">Coily</option>
+          <option value="unknown">Not sure</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="length">Current hair length</label>
+        <select id="length">
+          <option value="short">Short</option>
+          <option value="medium">Medium</option>
+          <option value="long">Long</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="volume">Hair volume</label>
+        <select id="volume">
+          <option value="low">Low / Fine</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">Thick / High</option>
+        </select>
+      </div>
+
+      <button class="btn" onclick="analyzeHair()">
+        ✨ Find My Hairstyles
+      </button>
+
+      <p class="note">
+        These selections are used for the initial recommendation engine.
+        Automatic visual AI analysis will be connected through the backend.
+      </p>
+    </div>
+
+  </div>
+
+  <section class="results" id="results">
+    <div class="results-heading">
+      <div>
+        <h2>Your Hairstyle Matches</h2>
+        <p class="note" id="resultDescription"></p>
+      </div>
+    </div>
+
+    <div class="result-grid" id="resultGrid"></div>
+  </section>
+
+  <section class="tryon" id="tryon">
+    <h2>03. Virtual Hairstyle Try-On</h2>
+    <p>
+      See how your chosen hairstyle could look on your uploaded photo.
+      Select a hairstyle from your recommendations to begin.
+    </p>
+
+    <div class="field">
+      <label for="tryonStyle">Selected hairstyle</label>
+      <select id="tryonStyle"></select>
+    </div>
+
+    <button class="btn" id="tryonButton" onclick="tryOnHair()">
+      ✨ Generate My New Look
+    </button>
+
+    <p class="note">
+      Realistic AI transformations require a connected image-generation
+      backend. No fake transformation will be shown if the service is unavailable.
+    </p>
+
+    <div class="tryon-image" id="tryonOutput">
+      <p>Your transformed photograph will appear here.</p>
+    </div>
+  </section>
+
+  <section class="favourites" id="favourites">
+    <h2>♡ Your Favourite Styles</h2>
+    <div id="savedList">
+      <p class="note">Your saved hairstyles will appear here.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Made with ♡ by <span>Haari_Codes</span></p>
+  <p style="margin-top:8px">HairMatch AI | Discover your signature look.</p>
+</footer>
+
+<script>
+let uploadedFile = null;
+let savedStyles = [];
+let currentStyles = [];
+
+// PHOTO UPLOAD
+
+const photoInput = document.getElementById("photoInput");
+const preview = document.getElementById("preview");
+
+photoInput.addEventListener("change", function() {
+  const file = this.files[0];
+
+  if (!file) return;
+
+  if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+    alert("Please upload a JPG, PNG or WEBP image.");
+    this.value = "";
+    return;
+  }
+
+  if (file.size > 10 * 1024 * 1024) {
+    alert("Image must be smaller than 10 MB.");
+    this.value = "";
+    return;
+  }
+
+  uploadedFile = file;
+
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    preview.src = e.target.result;
+    preview.style.display = "block";
+    document.getElementById("uploadContent").style.display = "none";
+    document.getElementById("removePhoto").style.display = "block";
+  };
+
+  reader.readAsDataURL(file);
+});
+
+function removeImage() {
+  uploadedFile = null;
+  photoInput.value = "";
+  preview.src = "";
+  preview.style.display = "none";
+  document.getElementById("uploadContent").style.display = "block";
+  document.getElementById("removePhoto").style.display = "none";
+}
+
+// HAIRSTYLE DATABASE
+
+const hairstyles = [
+  {
+    name: "Layered Cut",
+    icon: "✂️",
+    gender: ["women", "unisex"],
+    faces: ["oval", "round", "square", "heart", "diamond", "oblong"],
+    textures: ["straight", "wavy", "curly"],
+    lengths: ["medium", "long"],
+    description: "Soft layers add movement and shape while keeping your natural length."
+  },
+  {
+    name: "Bob Cut",
+    icon: "💇",
+    gender: ["women", "unisex"],
+    faces: ["oval", "heart", "diamond"],
+    textures: ["straight", "wavy"],
+    lengths: ["short", "medium"],
+    description: "A timeless, elegant cut that frames the face beautifully."
+  },
+  {
+    name: "Curtain Bangs",
+    icon: "✨",
+    gender: ["women", "unisex"],
+    faces: ["oval", "round", "square", "heart", "oblong"],
+    textures: ["straight", "wavy"],
+    lengths: ["medium", "long"],
+    description: "Face-framing bangs create a soft and effortless appearance."
+  },
+  {
+    name: "Pixie Cut",
+    icon: "🌟",
+    gender: ["women", "unisex"],
+    faces: ["oval", "heart", "diamond"],
+    textures: ["straight", "wavy", "curly"],
+    lengths: ["short", "medium", "long"],
+    description: "A confident, low-maintenance short hairstyle."
+  },
+  {
+    name: "Long Waves",
+    icon: "🌊",
+    gender: ["women", "unisex"],
+    faces: ["oval", "square", "heart", "oblong"],
+    textures: ["straight", "wavy", "curly"],
+    lengths: ["medium", "long"],
+    description: "Natural-looking waves add softness and dimension."
+  },
+  {
+    name: "Shag Cut",
+    icon: "✂️",
+    gender: ["women", "unisex"],
+    faces: ["oval", "round", "square", "oblong"],
+    textures: ["straight", "wavy", "curly"],
+    lengths: ["short", "medium", "long"],
+    description: "Textured layers create a relaxed, voluminous look."
+  },
+  {
+    name: "Textured Crop",
+    icon: "💈",
+    gender: ["men", "unisex"],
+    faces: ["oval", "round", "square", "diamond"],
+    textures: ["straight", "wavy", "curly"],
+    lengths: ["short", "medium"],
+    description: "A modern cropped style with texture and definition."
+  },
+  {
+    name: "Classic Taper",
+    icon: "💈",
+    gender: ["men", "unisex"],
+    faces: ["oval", "round", "square", "heart"],
+    textures: ["straight", "wavy", "curly"],
+    lengths: ["short", "medium"],
+    description: "Clean sides with a gradual fade and balanced top."
+  },
+  {
+    name: "Side Part",
+    icon: "✨",
+    gender: ["men", "unisex"],
+    faces: ["oval", "round", "square", "oblong"],
+    textures: ["straight", "wavy"],
+    lengths: ["short", "medium"],
+    description: "A polished, versatile hairstyle with a defined side part."
+  },
+  {
+    name: "Curly Fringe",
+    icon: "🌿",
+    gender: ["men", "unisex"],
+    faces: ["oval", "square", "oblong"],
+    textures: ["curly", "coily", "wavy"],
+    lengths: ["short", "medium"],
+    description: "Natural curls create volume and a relaxed modern finish."
+  },
+  {
+    name: "Pompadour",
+    icon: "💈",
+    gender: ["men"],
+    faces: ["oval", "round", "square"],
+    textures: ["straight", "wavy"],
+    lengths: ["short", "medium"],
+    description: "Volume on top creates a bold, structured silhouette."
+  },
+  {
+    name: "Buzz Cut",
+    icon: "✂️",
+    gender: ["men", "unisex"],
+    faces: ["oval", "square", "diamond"],
+    textures: ["straight", "wavy", "curly", "coily"],
+    lengths: ["short", "medium", "long"],
+    description: "A simple, sharp and easy-to-maintain haircut."
+  }
+];
+
+// RECOMMENDATION ENGINE
+
+function analyzeHair() {
+
+  if (!uploadedFile) {
+    alert("Please upload your photo first.");
+    return;
+  }
+
+  const gender = document.getElementById("gender").value;
+  const face = document.getElementById("face").value;
+  const texture = document.getElementById("texture").value;
+  const length = document.getElementById("length").value;
+  const volume = document.getElementById("volume").value;
+
+  let matches = hairstyles.map(style => {
+
+    let score = 0;
+
+    if (gender === "any" || style.gender.includes(gender)) {
+      score += 2;
+    } else {
+      return {...style, score: -1};
+    }
+
+    if (face === "unknown" || style.faces.includes(face)) {
+      score += 3;
+    }
+
+    if (texture === "unknown" || style.textures.includes(texture)) {
+      score += 2;
+    }
+
+    if (style.lengths.includes(length)) {
+      score += 2;
+    }
+
+    // A preference-based bonus, not a hair diagnosis.
+    if (volume === "low" &&
+        ["Layered Cut", "Bob Cut", "Textured Crop", "Shag Cut"].includes(style.name)) {
+      score += 1;
+    }
+
+    if (volume === "high" &&
+        ["Long Waves", "Curly Fringe", "Shag Cut"].includes(style.name)) {
+      score += 1;
+    }
+
+    return {...style, score};
+  });
+
+  currentStyles = matches
+    .filter(style => style.score >= 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 6);
+
+  displayResults();
+
+  document.getElementById("results").style.display = "block";
+  document.getElementById("tryon").style.display = "block";
+
+  document.getElementById("results").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+// DISPLAY RESULTS
+
+function displayResults() {
+
+  const grid = document.getElementById("resultGrid");
+  const select = document.getElementById("tryonStyle");
+
+  grid.innerHTML = "";
+  select.innerHTML = "";
+
+  document.getElementById("resultDescription").textContent =
+    "Recommendations based on your selected preferences. These are style suggestions, not professional or AI-verified assessments.";
+
+  currentStyles.forEach((style, index) => {
+
+    const card = document.createElement("div");
+    card.className = "hair-card";
+
+    const visual = document.createElement("div");
+    visual.className = "hair-visual";
+    visual.textContent = style.icon;
+
+    const info = document.createElement("div");
+    info.className = "hair-info";
+
+    const title = document.createElement("h3");
+    title.textContent = style.name;
+
+    const description = document.createElement("p");
+    description.textContent = style.description;
+
+    const button = document.createElement("button");
+    button.textContent = savedStyles.includes(style.name)
+      ? "♥ Saved"
+      : "♡ Save Favourite";
+
+    if (savedStyles.includes(style.name)) {
+      button.classList.add("saved");
+    }
+
+    button.addEventListener("click", () => toggleSave(style.name));
+
+    info.append(title, description, button);
+    card.append(visual, info);
+    grid.appendChild(card);
+
+    const option = document.createElement("option");
+    option.value = style.name;
+    option.textContent = style.name;
+    select.appendChild(option);
+  });
+}
+
+// FAVOURITES
+
+function toggleSave(name) {
+
+  if (savedStyles.includes(name)) {
+    savedStyles = savedStyles.filter(item => item !== name);
+  } else {
+    savedStyles.push(name);
+  }
+
+  updateSaved();
+  displayResults();
+}
+
+function updateSaved() {
+
+  const container = document.getElementById("savedList");
+  container.innerHTML = "";
+
+  if (savedStyles.length === 0) {
+    container.textContent = "No favourite hairstyles saved yet.";
+    container.className = "note";
+    return;
+  }
+
+  container.className = "";
+
+  savedStyles.forEach(name => {
+    const item = document.createElement("span");
+    item.className = "saved-item";
+    item.textContent = "♥ " + name;
+    container.appendChild(item);
+  });
+}
+
+// REAL AI TRY-ON INTEGRATION
+
+async function tryOnHair() {
+
+  if (!uploadedFile) {
+    alert("Upload a photo first.");
+    return;
+  }
+
+  const style = document.getElementById("tryonStyle").value;
+  const button = document.getElementById("tryonButton");
+  const output = document.getElementById("tryonOutput");
+
+  button.disabled = true;
+  button.textContent = "Generating your new look...";
+
+  output.textContent = "Connecting to the AI hairstyle service...";
+
+  try {
+
+    const formData = new FormData();
+
+    formData.append("image", uploadedFile);
+    formData.append("hairstyle", style);
+    formData.append("gender", document.getElementById("gender").value);
+
+    /*
+      BACKEND REQUIRED:
+
+      Create a POST endpoint at /api/try-on.
+
+      It should:
+      1. Receive the uploaded photograph.
+      2. Receive the selected hairstyle.
+      3. Send both to a hairstyle image-generation API.
+      4. Return JSON: { "imageUrl": "https://..." }
+
+      Keep your AI provider's API key on the server.
+      Never put secret API keys inside this HTML file.
+    */
+
+    const response = await fetch("/api/try-on", {
+      method: "POST",
+      body: formData
+    });
+
+    if (!response.ok) {
+      throw new Error("AI service is not connected or returned an error.");
+    }
+
+    const data = await response.json();
+
+    if (!data.imageUrl) {
+      throw new Error("The AI service did not return an image.");
+    }
+
+    const image = document.createElement("img");
+    image.alt = "AI hairstyle preview";
+    image.src = data.imageUrl;
+
+    output.innerHTML = "";
+    output.appendChild(image);
+
+  } catch (error) {
+
+    output.textContent =
+      "Virtual try-on is not connected yet. Set up the AI backend at /api/try-on to generate realistic hairstyle previews.";
+
+    console.error(error);
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = "✨ Generate My New Look";
+  }
+}
+
+</script>
+
+</body>
+</html>
