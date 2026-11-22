@@ -857,18 +857,20 @@ function analyzeHair() {
 
 // DISPLAY RESULTS
 
-function displayResults() {
+
+async function displayResults() {
 
   const grid = document.getElementById("resultGrid");
   const select = document.getElementById("tryonStyle");
 
   grid.innerHTML = "";
-  select.innerHTML = "";
+  select.innerHTML = "<option>Loading AI hairstyles...</option>";
 
   document.getElementById("resultDescription").textContent =
-    "Recommendations based on your selected preferences. These are style suggestions, not professional or AI-verified assessments.";
+    "Recommendations based on your preferences.";
 
-  currentStyles.forEach((style, index) => {
+  // Keep existing recommendation cards
+  currentStyles.forEach(style => {
 
     const card = document.createElement("div");
     card.className = "hair-card";
@@ -887,6 +889,7 @@ function displayResults() {
     description.textContent = style.description;
 
     const button = document.createElement("button");
+
     button.textContent = savedStyles.includes(style.name)
       ? "♥ Saved"
       : "♡ Save Favourite";
@@ -900,13 +903,44 @@ function displayResults() {
     info.append(title, description, button);
     card.append(visual, info);
     grid.appendChild(card);
-
-    const option = document.createElement("option");
-    option.value = style.name;
-    option.textContent = style.name;
-    select.appendChild(option);
   });
+
+  // Load actual Perfect Corp templates
+  try {
+
+    const response = await fetch("/api/templates");
+    const result = await response.json();
+
+    if (!response.ok || !result.data?.templates) {
+      throw new Error("Could not load AI hairstyles");
+    }
+
+    const gender = document.getElementById("gender").value;
+
+    const templates = result.data.templates.filter(item => {
+      if (gender === "women") return item.category_name === "Female";
+      if (gender === "men") return item.category_name === "Male";
+      return true;
+    });
+
+    select.innerHTML = "";
+
+    templates.forEach(item => {
+
+      const option = document.createElement("option");
+      option.value = item.id;
+      option.textContent = item.title;
+
+      select.appendChild(option);
+    });
+
+  } catch (error) {
+
+    select.innerHTML = "<option>Could not load hairstyles</option>";
+    console.error(error);
+  }
 }
+
 
 // FAVOURITES
 
@@ -966,7 +1000,7 @@ async function tryOnHair() {
     const formData = new FormData();
 
     formData.append("image", uploadedFile);
-    formData.append("hairstyle", style);
+    formData.append("template_id", style);
     formData.append("gender", document.getElementById("gender").value);
 
     /*
