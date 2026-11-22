@@ -507,73 +507,67 @@ footer span {
       </p>
     </div>
 
-    <div class="panel">
-      <h3>02. Your Hair Profile</h3>
-      <p class="panel-desc">Choose your preferences for better recommendations.</p>
+<section class="profile" id="profile">
+  <h2>02. Your Hair Profile</h2>
+  <p>Tell us about your hair for better recommendations.</p>
 
-      <div class="field">
-        <label for="gender">Style category</label>
-        <select id="gender">
-          <option value="any">Any style</option>
-          <option value="women">Women's hairstyles</option>
-          <option value="men">Men's hairstyles</option>
-          <option value="unisex">Unisex hairstyles</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="face">Face shape</label>
-        <select id="face">
-          <option value="unknown">Not sure</option>
-          <option value="oval">Oval</option>
-          <option value="round">Round</option>
-          <option value="square">Square</option>
-          <option value="heart">Heart</option>
-          <option value="diamond">Diamond</option>
-          <option value="oblong">Oblong</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="texture">Hair texture</label>
-        <select id="texture">
-          <option value="straight">Straight</option>
-          <option value="wavy">Wavy</option>
-          <option value="curly">Curly</option>
-          <option value="coily">Coily</option>
-          <option value="unknown">Not sure</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="length">Current hair length</label>
-        <select id="length">
-          <option value="short">Short</option>
-          <option value="medium">Medium</option>
-          <option value="long">Long</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="volume">Hair volume</label>
-        <select id="volume">
-          <option value="low">Low / Fine</option>
-          <option value="medium" selected>Medium</option>
-          <option value="high">Thick / High</option>
-        </select>
-      </div>
-
-      <button class="btn" onclick="analyzeHair()">
-        ✨ Find My Hairstyles
-      </button>
-
-      <p class="note">
-        These selections are used for the initial recommendation engine.
-        Automatic visual AI analysis will be connected through the backend.
-      </p>
-    </div>
-
+  <div class="field">
+    <label for="gender">Style category</label>
+    <select id="gender">
+      <option value="everyone">Everyone</option>
+      <option value="women">Women</option>
+      <option value="men">Men</option>
+    </select>
   </div>
+
+  <div class="field">
+    <label for="faceShape">Face shape</label>
+    <select id="faceShape">
+      <option value="auto">Auto-detect</option>
+      <option value="oval">Oval</option>
+      <option value="round">Round</option>
+      <option value="square">Square</option>
+      <option value="heart">Heart</option>
+      <option value="oblong">Oblong</option>
+      <option value="diamond">Diamond</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="texture">Hair texture</label>
+    <select id="texture">
+      <option value="straight">Straight</option>
+      <option value="wavy">Wavy</option>
+      <option value="curly">Curly</option>
+      <option value="coily">Coily</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="length">Current hair length</label>
+    <select id="length">
+      <option value="short">Short</option>
+      <option value="medium">Medium</option>
+      <option value="long">Long</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="volume">Hair volume</label>
+    <select id="volume">
+      <option value="low">Low</option>
+      <option value="medium" selected>Medium</option>
+      <option value="high">High</option>
+    </select>
+  </div>
+
+  <button class="btn" id="findStylesButton"
+    onclick="findMyHairstyles()">
+    ✨ Find My Hairstyles
+  </button>
+</section>
+
+    
 
   <section class="results" id="results">
     <div class="results-heading">
@@ -791,61 +785,27 @@ const hairstyles = [
 
 // RECOMMENDATION ENGINE
 
-function analyzeHair() {
+
+function findMyHairstyles() {
 
   if (!uploadedFile) {
     alert("Please upload your photo first.");
     return;
   }
 
-  const gender = document.getElementById("gender").value;
-  const face = document.getElementById("face").value;
-  const texture = document.getElementById("texture").value;
-  const length = document.getElementById("length").value;
-  const volume = document.getElementById("volume").value;
+  const profile = {
+    gender: document.getElementById("gender").value,
+    faceShape: document.getElementById("faceShape").value,
+    texture: document.getElementById("texture").value,
+    length: document.getElementById("length").value,
+    volume: document.getElementById("volume").value
+  };
 
-  let matches = hairstyles.map(style => {
+  console.log("Hair profile:", profile);
 
-    let score = 0;
-
-    if (gender === "any" || style.gender.includes(gender)) {
-      score += 2;
-    } else {
-      return {...style, score: -1};
-    }
-
-    if (face === "unknown" || style.faces.includes(face)) {
-      score += 3;
-    }
-
-    if (texture === "unknown" || style.textures.includes(texture)) {
-      score += 2;
-    }
-
-    if (style.lengths.includes(length)) {
-      score += 2;
-    }
-
-    // A preference-based bonus, not a hair diagnosis.
-    if (volume === "low" &&
-        ["Layered Cut", "Bob Cut", "Textured Crop", "Shag Cut"].includes(style.name)) {
-      score += 1;
-    }
-
-    if (volume === "high" &&
-        ["Long Waves", "Curly Fringe", "Shag Cut"].includes(style.name)) {
-      score += 1;
-    }
-
-    return {...style, score};
-  });
-
-  currentStyles = matches
-    .filter(style => style.score >= 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 6);
-
-  displayResults();
+  // Run your existing recommendation function
+  // Make sure this matches your existing function name.
+  generateRecommendations(profile);
 
   document.getElementById("results").style.display = "block";
   document.getElementById("tryon").style.display = "block";
@@ -854,6 +814,7 @@ function analyzeHair() {
     behavior: "smooth"
   });
 }
+
 
 // DISPLAY RESULTS
 
